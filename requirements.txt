@@ -1,0 +1,12 @@
+keras_bert==0.55.1
+glove_python==0.1.0
+numpy==1.15.1
+keras_contrib==2.0.8
+gensim==3.7.3
+tqdm==4.28.1
+tensorflow==1.8.0
+Keras==2.2.4
+matplotlib==2.2.3
+jieba==0.39
+fastText==0.9.1
+glove==1.0.2
