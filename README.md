@@ -46,6 +46,7 @@
   - **ngram-match**  
   ngram匹配特征向量。我们将以每个字为首（尾）的 bi-gram， tri-gram， 4-gram 等与 mention 库进行匹配，得到 one-hot 向量。如下图例所示，考虑对“币”的 n-gram，发现只有以“币”为尾的 tri-gram “比特币”能够与 mention 库匹配。  
   <img src="./asset/ngram-match.png" width="30%" align=center />  
+  
   - **max-match**  
   双向最大匹配特征向量。我们将 mention 库作为分词词典，使用双向最大匹配分词算法找出所有候选 mention。如句子 `“比特币吸粉无数”` 使用双向最大匹配算法后会得到分词序列：`['比特币', '吸粉', '无数']`，然后我们使用 BMEO 标注（'O'表示不是mention）将序列标注为`[B, M, E, B, E, B, E]`。我们为这四个标注分别随机初始化一个50维向量，然后在模型训练时再进行优化。
 
