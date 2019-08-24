@@ -1,0 +1,5 @@
+.idea/
+__pycache__/
+raw_data/
+utils/__pycache__/
+log/
