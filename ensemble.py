@@ -164,12 +164,17 @@ def recognition(model_name, label_schema='BIOES', batch_size=32, n_epoch=50, lea
     if test_pred_prob is None or (predict_on_dev and dev_pred_prob is None):
         print('Logging Info - Experiment: %s' % config.exp_name)
         model = RecognitionModel(config, **kwargs)
-        model_save_path = os.path.join(config.checkpoint_dir, '{}.hdf5'.format(config.exp_name))
-        if not os.path.exists(model_save_path):
-            raise FileNotFoundError('Recognition model not exist: {}'.format(model_save_path))
+
         if swa_type is None:
+            model_save_path = os.path.join(config.checkpoint_dir, '{}.hdf5'.format(config.exp_name))
+            if not os.path.exists(model_save_path):
+                raise FileNotFoundError('Recognition model not exist: {}'.format(model_save_path))
             model.load_best_model()
         elif 'swa' in callbacks_to_add:
+            model_save_path = os.path.join(config.checkpoint_dir, '{}_{}.hdf5'.format(config.exp_name,
+                                                                                      swa_type))
+            if not os.path.exists(model_save_path):
+                raise FileNotFoundError('Recognition model not exist: {}'.format(model_save_path))
             model.load_swa_model(swa_type)
 
         print('Logging Info - Generate recognition prediction for test data:')
@@ -260,14 +265,18 @@ def link(model_name, batch_size=32, n_epoch=50, learning_rate=0.001, optimizer_t
     print('Logging Info - Experiment: %s' % config.exp_name)
     model = LinkModel(config, **kwargs)
 
-    model_save_path = os.path.join(config.checkpoint_dir, '{}.hdf5'.format(config.exp_name))
-    if not os.path.exists(model_save_path):
-        raise FileNotFoundError('Recognition model not exist: {}'.format(model_save_path))
-
-    if swa_type is None and polyak_type is None:
+    if swa_type is None:
+        model_save_path = os.path.join(config.checkpoint_dir, '{}.hdf5'.format(config.exp_name))
+        if not os.path.exists(model_save_path):
+            raise FileNotFoundError('Linking model not exist: {}'.format(model_save_path))
         model.load_best_model()
     elif 'swa' in callbacks_to_add:
+        model_save_path = os.path.join(config.checkpoint_dir, '{}_{}.hdf5'.format(config.exp_name,
+                                                                                  swa_type))
+        if not os.path.exists(model_save_path):
+            raise FileNotFoundError('Linking model not exist: {}'.format(model_save_path))
         model.load_swa_model(swa_type)
+
     return model
 
 
