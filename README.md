@@ -130,4 +130,27 @@ python3 ensemble.py
 - [预处理文件，提取码：6oh6](https://pan.baidu.com/s/16A80R6hRX-NMZvRlhMpkmg)  
 - [模型文件，提取码：nzn8](https://pan.baidu.com/s/12vnRITDMj_RKN_Ja0Ze14Q)
 
+## FAQ
+
+### 论文  
+论文和海报在`paper`文件夹
+
+### 实体识别模型的命名  
+实体识别模型主要的区别在于输入的特征向量组合不同，以`2step_er_c2v_fix_32_adam_0.001_BIOES_encoder_type_bilstm_cnn_use_crf_True_swa_ernie_layer_1_fix_bichar_bic2v_fix_word_w2v_fix_charpos_cpos2v_fix_softword_dictfeat_maxmatch_swa`为例：
+
+- **c2v_fix**：字符向量的预训练方法 (c2v, c_fastext, c_glove) 以及在模型训练过程中是否可以微调 (fix, tune)  
+- **32**：batch_size
+- **adam_0.001**：optimizer和学习率 
+- **BIOES**：输出使用的标注方案(BIOES, BIO)  
+- **encoder_type_bilstm_cnn**：基本的序列模型框架  
+- **use_crf_True**：是否使用CRF层  
+- **ernie_layer_1_fix**：使用何种bert模型产生bert embedding(bert, ernie, bert_wwm)，使用bert最后多少层作为输出，是否可以微调(fix, tune)  
+- **bichar_bic2v_fix**：邻接字向量的预训练方式(bic2x, bic_fasttext, bic_glove)以及在模型训练过程中是否可以微调(fix, tune)  
+- **word_w2v_fix**：字符所在词向量的预训练方式(w2v, w_fasttext, w_glove)以及在模型训练过程中是否可以微调(fix, tune)  
+- **charpos_cpos2v_fix**：位置感知的字符向量的预训练方式(cpos2v, cpos_fasttext, cpos_glove)以及在模型训练过程中是否可以微调(fix, tune)  
+- **softword**：字符所在词的位置特征向量  
+- **dictfeat**：ngram匹配特征向量  
+- **maxmatch**：最大匹配特征向量  
+- **swa**：权重平均集成策略  
+
 
