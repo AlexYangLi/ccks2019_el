@@ -103,7 +103,7 @@ class InteractiveAttention(Layer):
                                         regularizer=self.regularizer, constraint=self.constraint)
             self.w_hb = self.add_weight(self.name+'_w_hb', (last_a, 1), initializer=self.initializer,
                                         regularizer=self.regularizer, constraint=self.constraint)
-        elif self.attend_type == 'max_mul_attend':
+        elif self.attend_type == 'max_co_attend':
             self.w_a = self.add_weight(self.name+'_w_a', (last_a, last_b), initializer=self.initializer,
                                        regularizer=self.regularizer, constraint=self.constraint)
             self.w_b = self.add_weight(self.name+'_w_b', (last_b, last_a), initializer=self.initializer,
