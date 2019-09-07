@@ -136,7 +136,7 @@ python3 ensemble.py
 论文和海报在`paper`文件夹
 
 ### 实体识别模型的命名  
-实体识别模型主要的区别在于输入的特征向量组合不同，以`2step_er_c2v_fix_32_adam_0.001_BIOES_encoder_type_bilstm_cnn_use_crf_True_swa_ernie_layer_1_fix_bichar_bic2v_fix_word_w2v_fix_charpos_cpos2v_fix_softword_dictfeat_maxmatch_swa`为例：
+实体识别模型主要的区别在于输入的特征向量组合不同，以 `2step_er_c2v_fix_32_adam_0.001_BIOES_encoder_type_bilstm_cnn_use_crf_True_swa_ernie_layer_1_fix_bichar_bic2v_fix_word_w2v_fix_charpos_cpos2v_fix_softword_dictfeat_maxmatch_swa` 为例：
 
 - **c2v_fix**：字符向量的预训练方法 (c2v, c_fastext, c_glove) 以及在模型训练过程中是否可以微调 (fix, tune)  
 - **32**：batch_size
@@ -144,13 +144,30 @@ python3 ensemble.py
 - **BIOES**：输出使用的标注方案(BIOES, BIO)  
 - **encoder_type_bilstm_cnn**：基本的序列模型框架  
 - **use_crf_True**：是否使用CRF层  
-- **ernie_layer_1_fix**：使用何种bert模型产生bert embedding(bert, ernie, bert_wwm)，使用bert最后多少层作为输出，是否可以微调(fix, tune)  
+- **ernie_layer_1_fix**：使用何种bert模型产生bert embedding(bert, ernie, bert_wwm)，使用bert最后多少层作为输出(1)，是否可以微调(fix, tune) 
 - **bichar_bic2v_fix**：邻接字向量的预训练方式(bic2x, bic_fasttext, bic_glove)以及在模型训练过程中是否可以微调(fix, tune)  
 - **word_w2v_fix**：字符所在词向量的预训练方式(w2v, w_fasttext, w_glove)以及在模型训练过程中是否可以微调(fix, tune)  
 - **charpos_cpos2v_fix**：位置感知的字符向量的预训练方式(cpos2v, cpos_fasttext, cpos_glove)以及在模型训练过程中是否可以微调(fix, tune)  
 - **softword**：字符所在词的位置特征向量  
 - **dictfeat**：ngram匹配特征向量  
 - **maxmatch**：最大匹配特征向量  
-- **swa**：权重平均集成策略  
+- **swa**：采用权重平均集成策略  
 
+### 实体消歧模型的命名  
+实体消歧模型的区别主要在于如何产生 mention 表征和 entity 表征的方法不同：
+
+1. `2step_el_c2v_fix_32_adam_0.001_rel_neg_5_not_omit_score_func_cosine_margin_0.04_max_mention_True_add_cnn_after_swa_swa.hdf5`  
+    - **c2v_fix**：字符向量的预训练方法 (c2v, c_fastext, c_glove) 以及在模型训练过程中是否可以微调 (fix, tune)  
+    - **32**：batch_size
+    - **adam_0.001**：optimizer和学习率 
+    - **rel**：产生mention表征的模型使用相对位置embedding输入  
+    - **neg_5**：负样本个数(5)  
+    - **not_omit**：不去掉只有一个候选实体的样本（无需消歧），默认会去掉  
+    - **score_func_cosine**：使用何种相似度度量函数(cosine, dense(即mlp), polynomial, sigmoid, euclidean等)  
+    - **margin_0.04**：损失函数中的margin的取值  
+    - **max_mention_True**：使用隐藏状态序列产生 mention 表征的时候，除了对取来自 mention 部分序列的第一个和最后一个隐藏状态向量，还有对该部分序列使用self-attention的结果之外，是否对该部分序列使用max-pooling(max_mention_True)以及avg-pooling(avg_mention_True)  
+    - **add_cnn_after**：是否在BiLSTM的基础上加上CNN，在BiLSTM前面(before)还是在后面加(after)  
+    - **swa**：采用权重平均集成策略  
+2. `2step_el_c2v_fix_32_adam_0.001_rel_neg_4_score_func_cosine_margin_0.04_max_mention_True_encoder_type_self_attend_single_attend_ent_attend_type_mul_swa_swa.hdf5`  
+    - **encoder_type**：在`linking_model.py`尝试了多种使用隐藏状态序列产生 mention 表征和 entity 表征的方法：1. "self_attend_max" 表示 mention 表征使用来自 mention 部分序列的self-attention结果（还有第一个和最后一个隐藏状态向量，可能还有max-pooling和avg-pooling的结果），而 entity 表征使用 max-pooling的结果，这是默认的方法；2. "self_attend_single_attend" 表示 mention 表征使用来自 mention 部分序列的self-attention结果（还有第一个和最后一个隐藏状态向量，可能还有max-pooling和avg-pooling的结果）,而 entity 表征使用 mention 表征跟 entity 文本进行 attention 的结果，这时需要 "ent_attend_type" 指示使用哪种 attention 权重计算方式(mul, add, dot, scaled_dot)；3. "co_attend"：mention 表征 和 entity 表征使用两者的隐藏状态序列的interactive attention来产生。
 
