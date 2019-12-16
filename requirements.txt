@@ -4,7 +4,7 @@ numpy==1.15.1
 git+https://www.github.com/keras-team/keras-contrib.git
 gensim==3.7.3
 tqdm==4.28.1
-tensorflow-gpu==1.8.0
+tensorflow-gpu==1.15.0
 Keras==2.2.4
 matplotlib==2.2.3
 jieba==0.39
