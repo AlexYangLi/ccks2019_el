@@ -1,6 +1,6 @@
 keras-bert==0.55.1
 glove_python==0.1.0
-numpy==1.15.1
+numpy==1.22.0
 git+https://www.github.com/keras-team/keras-contrib.git
 gensim==3.7.3
 tqdm==4.28.1
